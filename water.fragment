@@ -1,0 +1,31 @@
+// Aurora V26.13 Water Fragment Shader (Photon water + Mirai reflections + Glitter path)
+#version 300 es
+
+precision highp float;
+
+in vec2 TexCoord;
+in vec3 WorldPos;
+in vec3 Normal;
+
+uniform vec4 TIME;
+uniform vec3 SUN_DIR;
+uniform sampler2D TEXTURE_0;
+
+out vec4 fragColor;
+
+void main() {
+    vec2 p = TexCoord + vec2(TIME.x * 0.05, TIME.x * 0.03);
+    float ripple = sin(p.x * 20.0) * cos(p.y * 20.0) * 0.5 + 0.5;
+    
+    vec3 waterBase = vec3(0.05, 0.25, 0.45);
+    
+    // Sun glitter path (Mirai / Photon style specular sun reflection)
+    vec3 viewDir = normalize(vec3(0.0, 1.0, -1.0));
+    vec3 lightDir = normalize(SUN_DIR);
+    vec3 halfDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normalize(Normal), halfDir), 0.0), 128.0);
+    
+    vec3 finalWater = waterBase + vec3(1.0, 0.9, 0.7) * spec * 2.0 + ripple * 0.05;
+    
+    fragColor = vec4(finalWater, 0.75);
+}
