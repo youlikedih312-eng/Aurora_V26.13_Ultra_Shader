@@ -1,0 +1,42 @@
+// Aurora V26.13 End Sky Fragment Shader (Massive Saturn + Rings & Black Hole + Photon Ring)
+#version 300 es
+
+precision highp float;
+
+in vec3 Pos;
+out vec4 fragColor;
+
+void main() {
+    vec3 dir = normalize(Pos);
+    vec3 space = vec3(0.01, 0.01, 0.02);
+    
+    // Saturn position & rendering (left side)
+    vec3 saturnCenter = vec3(-0.6, 0.2, 0.7);
+    float saturnDist = length(dir - saturnCenter);
+    if (saturnDist < 0.25) {
+        float lat = acos((dir.y - saturnCenter.y) / 0.25);
+        float banding = sin(lat * 15.0) * 0.1 + 0.8;
+        space = vec3(0.85, 0.75, 0.55) * banding;
+    }
+    // Saturn rings
+    vec3 ringOffset = dir - saturnCenter;
+    float ringDist = abs(ringOffset.y);
+    float ringRadius = length(ringOffset.xz);
+    if (ringRadius > 0.3 && ringRadius < 0.65 && ringDist < 0.03) {
+        space = mix(space, vec3(0.7, 0.6, 0.4), 0.8);
+    }
+    
+    // Massive Black Hole position & rendering (right side, far behind Saturn)
+    vec3 bhCenter = vec3(0.4, 0.1, 0.8);
+    float bhDist = length(dir - bhCenter);
+    if (bhDist < 0.12) {
+        space = vec3(0.0); // Event horizon black center
+    }
+    // Photon accretion ring around black hole
+    float bhRingRadius = length((dir - bhCenter).xy);
+    if (bhRingRadius > 0.13 && bhRingRadius < 0.22) {
+        space = vec3(1.5, 1.2, 0.8); // Bright photon ring glow
+    }
+    
+    fragColor = vec4(space, 1.0);
+}
