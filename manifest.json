@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Aurora V26.13 Ultra Shader (MB Loader)",
+    "description": "Volumetric 16bps clouds, Photon water, Mirai reflections, Saturn/Black Hole End, Realistic Sun/Moon, BSL Vegetation waving, Mellow FPS boost.",
+    "uuid": "a1b2c3d4-e5f6-7890-abcd-ef0123456789",
+    "version": [26, 13, 0],
+    "min_engine_version": [1, 20, 0]
+  },
+  "modules": [
+    {
+      "description": "Aurora Shader Resources",
+      "type": "resources",
+      "uuid": "b2c3d4e5-f678-90ab-cdef-0123456789ab",
+      "version": [26, 13, 0]
+    }
+  ]
+}
